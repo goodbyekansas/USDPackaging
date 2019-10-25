@@ -1,6 +1,6 @@
 image: Visual Studio 2017
 
-clone_folder: c:\projects\USDPackages
+clone_folder: c:\projects\USDPackaging
 
 branches:
     only:
@@ -25,12 +25,6 @@ cache:
 init:
     - set PATH=c:/Python27-x64;c:/Python27-x64/Scripts;%PATH%
     - C:\"Program Files (x86)"\"Microsoft Visual Studio"\2017\Community\VC\Auxiliary\Build\vcvarsall.bat amd64
-
-
-before_build:
-    - python -m pip install --upgrade pip
-    - pip install pyside
-    - pip install PyOpenGL
     - git clone --single-branch --branch gbk  https://github.com/goodbyekansas/USD c:/projects/USD
     - git clone --single-branch --branch gbk-master https://github.com/goodbyekansas/maya-usd c:/projects/maya-usd
     - wget https://autodesk-adn-transfer.s3-us-west-2.amazonaws.com/ADN+Extranet/M%26E/Maya/devkit+2019/Autodesk_Maya_2019_2_Update_DEVKIT_Windows.zip -OutFile devkit_maya2019.zip
@@ -39,8 +33,12 @@ before_build:
     - wget https://s3-us-west-2.amazonaws.com/autodesk-adn-transfer/ADN+Extranet/M%26E/Maya/devkit+2018/Autodesk_Maya_2018_6_Update_DEVKIT_Windows.zip -OutFile devkit_maya2018.zip
     - echo "extracting maya devkit 2018 archive..."
     - Expand-Archive -Path devkit_maya2018.zip -DestinationPath C:/USDgen/src/devkit_maya2018 -Force
+    - cd c:/projects/USD
 
-  
+before_build:
+    - python -m pip install --upgrade pip
+    - pip install pyside
+    - pip install PyOpenGL
 
 build_script:
 
