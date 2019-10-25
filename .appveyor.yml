@@ -10,8 +10,8 @@ platform:
     - x64
 
 install:
-    - ps: $env:USD_YY_VERSION = (Get-Content .\cmake\defaults\Version.cmake | Where-Object {$_ -match 'PXR_MINOR_VERSION'}).Split("( )")[2].Trim('"').PadLeft(2, "0")
-    - ps: $env:USD_MM_VERSION = (Get-Content .\cmake\defaults\Version.cmake | Where-Object {$_ -match 'PXR_PATCH_VERSION'}).Split("( )")[2].Trim('"').PadLeft(2, "0")
+    - ps: $env:USD_YY_VERSION = (Get-Content c:\projects\USD\cmake\defaults\Version.cmake | Where-Object {$_ -match 'PXR_MINOR_VERSION'}).Split("( )")[2].Trim('"').PadLeft(2, "0")
+    - ps: $env:USD_MM_VERSION = (Get-Content c:\projects\USD\cmake\defaults\Version.cmake | Where-Object {$_ -match 'PXR_PATCH_VERSION'}).Split("( )")[2].Trim('"').PadLeft(2, "0")
     - ps: Update-AppveyorBuild -Version "$env:USD_YY_VERSION.$env:USD_MM_VERSION-$env:APPVEYOR_REPO_BRANCH-build$env:APPVEYOR_BUILD_NUMBER"
     - ps: Invoke-WebRequest https://autodesk-adn-transfer.s3-us-west-2.amazonaws.com/ADN+Extranet/M%26E/Maya/devkit+2019/Autodesk_Maya_2019_2_Update_DEVKIT_Windows.zip -OutFile devkit_maya2019.zip
     - echo "extracting maya devkit 2019 archive..."
