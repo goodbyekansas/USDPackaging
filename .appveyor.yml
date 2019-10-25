@@ -27,10 +27,10 @@ init:
     - C:\"Program Files (x86)"\"Microsoft Visual Studio"\2017\Community\VC\Auxiliary\Build\vcvarsall.bat amd64
     - git clone --single-branch --branch gbk  https://github.com/goodbyekansas/USD c:/projects/USD
     - git clone --single-branch --branch gbk-master https://github.com/goodbyekansas/maya-usd c:/projects/maya-usd
-    - wget https://autodesk-adn-transfer.s3-us-west-2.amazonaws.com/ADN+Extranet/M%26E/Maya/devkit+2019/Autodesk_Maya_2019_2_Update_DEVKIT_Windows.zip -OutFile devkit_maya2019.zip
+    - Invoke-WebRequest https://autodesk-adn-transfer.s3-us-west-2.amazonaws.com/ADN+Extranet/M%26E/Maya/devkit+2019/Autodesk_Maya_2019_2_Update_DEVKIT_Windows.zip -OutFile devkit_maya2019.zip
     - echo "extracting maya devkit 2019 archive..."
     - Expand-Archive -Path devkit_maya2019.zip -DestinationPath c:/USDgen/src/devkit_maya2019 -Force
-    - wget https://s3-us-west-2.amazonaws.com/autodesk-adn-transfer/ADN+Extranet/M%26E/Maya/devkit+2018/Autodesk_Maya_2018_6_Update_DEVKIT_Windows.zip -OutFile devkit_maya2018.zip
+    - Invoke-WebRequest https://s3-us-west-2.amazonaws.com/autodesk-adn-transfer/ADN+Extranet/M%26E/Maya/devkit+2018/Autodesk_Maya_2018_6_Update_DEVKIT_Windows.zip -OutFile devkit_maya2018.zip
     - echo "extracting maya devkit 2018 archive..."
     - Expand-Archive -Path devkit_maya2018.zip -DestinationPath C:/USDgen/src/devkit_maya2018 -Force
     - cd c:/projects/USD
