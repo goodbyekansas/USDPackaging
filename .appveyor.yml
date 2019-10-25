@@ -32,7 +32,6 @@ cache:
 init:
     - set PATH=c:/Python27-x64;c:/Python27-x64/Scripts;%PATH%
     - C:\"Program Files (x86)"\"Microsoft Visual Studio"\2017\Community\VC\Auxiliary\Build\vcvarsall.bat amd64
-    - cd c:/projects/USD
 
 before_build:
     - python -m pip install --upgrade pip
