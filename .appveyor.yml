@@ -12,6 +12,14 @@ install:
     - ps: $env:USD_YY_VERSION = (Get-Content .\cmake\defaults\Version.cmake | Where-Object {$_ -match 'PXR_MINOR_VERSION'}).Split("( )")[2].Trim('"').PadLeft(2, "0")
     - ps: $env:USD_MM_VERSION = (Get-Content .\cmake\defaults\Version.cmake | Where-Object {$_ -match 'PXR_PATCH_VERSION'}).Split("( )")[2].Trim('"').PadLeft(2, "0")
     - ps: Update-AppveyorBuild -Version "$env:USD_YY_VERSION.$env:USD_MM_VERSION-$env:APPVEYOR_REPO_BRANCH-build$env:APPVEYOR_BUILD_NUMBER"
+    - git clone --single-branch --branch gbk  https://github.com/goodbyekansas/USD c:/projects/USD
+    - git clone --single-branch --branch gbk-master https://github.com/goodbyekansas/maya-usd c:/projects/maya-usd
+    - ps: Invoke-WebRequest https://autodesk-adn-transfer.s3-us-west-2.amazonaws.com/ADN+Extranet/M%26E/Maya/devkit+2019/Autodesk_Maya_2019_2_Update_DEVKIT_Windows.zip -OutFile devkit_maya2019.zip
+    - echo "extracting maya devkit 2019 archive..."
+    - ps: Expand-Archive -Path devkit_maya2019.zip -DestinationPath c:/USDgen/src/devkit_maya2019 -Force
+    - ps: Invoke-WebRequest https://s3-us-west-2.amazonaws.com/autodesk-adn-transfer/ADN+Extranet/M%26E/Maya/devkit+2018/Autodesk_Maya_2018_6_Update_DEVKIT_Windows.zip -OutFile devkit_maya2018.zip
+    - echo "extracting maya devkit 2018 archive..."
+    - ps: Expand-Archive -Path devkit_maya2018.zip -DestinationPath C:/USDgen/src/devkit_maya2018 -Force
 
 cache:
     - C:\USDgen\build\boost -> build_scripts/build_usd.py
@@ -24,14 +32,6 @@ cache:
 init:
     - set PATH=c:/Python27-x64;c:/Python27-x64/Scripts;%PATH%
     - C:\"Program Files (x86)"\"Microsoft Visual Studio"\2017\Community\VC\Auxiliary\Build\vcvarsall.bat amd64
-    - git clone --single-branch --branch gbk  https://github.com/goodbyekansas/USD c:/projects/USD
-    - git clone --single-branch --branch gbk-master https://github.com/goodbyekansas/maya-usd c:/projects/maya-usd
-    - ps: Invoke-WebRequest https://autodesk-adn-transfer.s3-us-west-2.amazonaws.com/ADN+Extranet/M%26E/Maya/devkit+2019/Autodesk_Maya_2019_2_Update_DEVKIT_Windows.zip -OutFile devkit_maya2019.zip
-    - echo "extracting maya devkit 2019 archive..."
-    - ps: Expand-Archive -Path devkit_maya2019.zip -DestinationPath c:/USDgen/src/devkit_maya2019 -Force
-    - ps: Invoke-WebRequest https://s3-us-west-2.amazonaws.com/autodesk-adn-transfer/ADN+Extranet/M%26E/Maya/devkit+2018/Autodesk_Maya_2018_6_Update_DEVKIT_Windows.zip -OutFile devkit_maya2018.zip
-    - echo "extracting maya devkit 2018 archive..."
-    - ps: Expand-Archive -Path devkit_maya2018.zip -DestinationPath C:/USDgen/src/devkit_maya2018 -Force
     - cd c:/projects/USD
 
 before_build:
