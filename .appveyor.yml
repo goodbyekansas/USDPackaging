@@ -40,11 +40,24 @@ before_build:
     - pip install PyOpenGL
 
 build_script:
-
     - cd c:/projects/USD
-    - python build_scripts/build_usd.py -vvv --build c:/USDgen/build --src c:/USDgen/src c:/USDinst/USD-core
+    - python build_scripts/build_usd.py -vvv --build c:/USDgen/build --src c:/USDgen/src %APPVEYOR_BUILD_FOLDER%/USDinst/USD-core
     - cd c:/USDgen/build
     - dir
     - cd c:/projects/maya-usd
-    - python build.py -v 3 --pxrusd-location c:/USDinst/USD-core --build-args="-DSKIP_USDMAYA_TESTS=ON,-DUFE_INCLUDE_DIR=c:/USDgen/src/devkit_maya2019/devkitBase/devkit/ufe/include,-DUFE_LIBRARY=c:/USDgen/src/devkit_maya2019/devkitBase/devkit/ufe/lib,-DMAYA_INCLUDE_DIRS=c:/USDgen/src/devkit_maya2019/devkitBase/include"  --install-location c:/Usdinst/maya-usd-2019 /tmp/workspace_maya2019 --devkit-location=c:/USDgen/src/devkit_maya2019/devkitBase/devkit
-    - python build.py -v 3 --pxrusd-location c:/USDinst/USD-core --build-args="-DSKIP_USDMAYA_TESTS=ON,-DUFE_INCLUDE_DIR=c:/USDgen/src/devkit_maya2018/devkitBase/devkit/ufe/include,-DUFE_LIBRARY=c:/USDgen/src/devkit_maya2018/devkitBase/devkit/ufe/lib,-DMAYA_INCLUDE_DIRS=c:/USDgen/src/devkit_maya2018/devkitBase/include"  --install-location c:/Usdinst/maya-usd-2018 /tmp/workspace_maya2018 --devkit-location=c:/USDgen/src/devkit_maya2018/devkitBase/devkit
+    - python build.py -v 3 --pxrusd-location %APPVEYOR_BUILD_FOLDER%/USDinst/USD-core --build-args="-DSKIP_USDMAYA_TESTS=ON,-DUFE_INCLUDE_DIR=c:/USDgen/src/devkit_maya2019/devkitBase/devkit/ufe/include,-DUFE_LIBRARY=c:/USDgen/src/devkit_maya2019/devkitBase/devkit/ufe/lib,-DMAYA_INCLUDE_DIRS=c:/USDgen/src/devkit_maya2019/devkitBase/include"  --install-location c:/Usdinst/maya-usd-2019 /tmp/workspace_maya2019 --devkit-location=c:/USDgen/src/devkit_maya2019/devkitBase/devkit
+    - python build.py -v 3 --pxrusd-location %APPVEYOR_BUILD_FOLDER%/USDinst/USD-core --build-args="-DSKIP_USDMAYA_TESTS=ON,-DUFE_INCLUDE_DIR=c:/USDgen/src/devkit_maya2018/devkitBase/devkit/ufe/include,-DUFE_LIBRARY=c:/USDgen/src/devkit_maya2018/devkitBase/devkit/ufe/lib,-DMAYA_INCLUDE_DIRS=c:/USDgen/src/devkit_maya2018/devkitBase/include"  --install-location c:/Usdinst/maya-usd-2018 /tmp/workspace_maya2018 --devkit-location=c:/USDgen/src/devkit_maya2018/devkitBase/devkit
+
+artifacts:
+  - path: USDInst
+    name: USD.19
+    type: zip
+
+deploy:
+  - provider: GitHub
+    artifact: USD.19.zip 
+    draft: false
+    prerelease: True
+    on:
+      branch: dev              
+
