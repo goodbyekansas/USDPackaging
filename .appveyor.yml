@@ -33,6 +33,7 @@ init:
     - C:\"Program Files (x86)"\"Microsoft Visual Studio"\2017\Community\VC\Auxiliary\Build\vcvarsall.bat amd64
     - git clone --single-branch --branch gbk  https://github.com/goodbyekansas/USD c:/projects/USD
     - git clone --single-branch --branch gbk-master https://github.com/goodbyekansas/maya-usd c:/projects/maya-usd
+    - git clone https://github.com/goodbyekansas/usd-qt.git c:/projects/usd-qt
     
 before_build:
     - python -m pip install --upgrade pip
