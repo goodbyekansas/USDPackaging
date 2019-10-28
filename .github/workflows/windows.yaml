@@ -1,0 +1,28 @@
+name: Windows Packaging
+on: push
+
+jobs:
+  build-core:
+    name: Build USD Core
+    runs-on: windows-2016
+    steps:
+      - uses: actions/checkout@v1
+      - name: Checkout USD GBK fork
+        uses: actions/checkout@v1
+        with:
+          repository: goodbyekansas/USD
+          ref: gbk
+          path: usd-core
+      - name: Set up Python 2.7 Environment
+        uses: actions/setup-python@v1
+        with:
+          python-version: '2.7.x'
+          architecture: 'x64'
+      - name: Install Python prereqs
+        run: |
+          pip install PySide PyOpenGL Jinja2
+      - name: Build USD Core
+        run: |
+          . .github/workflows/vs2019.ps1
+          cd ../usd-core
+          python build_scripts/build_usd.py --build-args=USD,"-DPYTHON_EXECUTABLE='$Env:pythonLocation/python.exe'" USDinst/USD-core
