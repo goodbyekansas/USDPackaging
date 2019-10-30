@@ -25,4 +25,12 @@ jobs:
         run: |
           . .github/workflows/vs2019.ps1
           cd ../usd-core
-          python build_scripts/build_usd.py --build-args=USD,"-DPYTHON_EXECUTABLE='$Env:pythonLocation/python.exe'" USDinst/USD-core
+          python build_scripts/build_usd.py --build-args=USD,"-DPYTHON_EXECUTABLE='$Env:pythonLocation/python.exe'" --build gen/build --src gen/src installed
+      - name: Zip all the files
+        run: |
+          7z a usd-core-windows.zip ..\usd-core\installed\*
+      - name: Upload USD core build
+        uses: actions/upload-artifact@v1
+        with:
+          name: usd-core-windows
+          path: usd-core-windows.zip
