@@ -23,7 +23,7 @@ jobs:
           pip install PySide PyOpenGL Jinja2
       - name: Build USD Core
         run: |
-          . .github/workflows/vs2019.ps1
+          . .github/workflows/vs2017.ps1
           cd ../usd-core
           python build_scripts/build_usd.py --build-args=USD,"-DPYTHON_EXECUTABLE='$Env:pythonLocation/python.exe'" --build gen/build --src gen/src installed
       - name: Zip all the files
@@ -34,3 +34,50 @@ jobs:
         with:
           name: usd-core-windows
           path: usd-core-windows.zip
+
+  build-usd-maya-2019:
+    name: Build USD Maya 2019
+    runs-on: windows-2016
+    needs: build-core
+    steps:
+      - uses: actions/checkout@v1
+      - name: Checkout Maya USD GBK fork
+        uses: actions/checkout@v1
+        with:
+          repository: goodbyekansas/maya-usd
+          ref: gbk-master
+          path: usd-maya
+      - name: Set up Python 2.7 Environment
+        uses: actions/setup-python@v1
+        with:
+          python-version: '2.7.x'
+          architecture: 'x64'
+      - name: Download USD core build
+        uses: actions/download-artifact@v1
+        with:
+          name: usd-core-windows
+          path: ../usd-core
+      - name: Install Maya 2019 DevKit
+        run: |
+          Invoke-WebRequest https://autodesk-adn-transfer.s3-us-west-2.amazonaws.com/ADN+Extranet/M%26E/Maya/devkit+2019/Autodesk_Maya_2019_2_Update_DEVKIT_Windows.zip -OutFile devkit_maya2019.zip
+          Expand-Archive -Path devkit_maya2019.zip -DestinationPath ..\maya-devkit -Force
+      - name: Install Python prereqs
+        run: |
+          pip install PySide PyOpenGL Jinja2
+      - name: Compile USD Maya 2019
+        run: |
+          . .github/workflows/vs2017.ps1
+          cd ../usd-maya
+          python build.py `
+          --build-args="-DPYTHON_EXECUTABLE='$Env:pythonLocation/python.exe',-DSKIP_USDMAYA_TESTS=ON,-DUFE_INCLUDE_DIR=../maya-devkit/devkitBase/devkit/ufe/include,-DUFE_LIBRARY=../maya-devkit/devkitBase/devkit/ufe/lib,-DMAYA_INCLUDE_DIRS=../maya-devkit/devkitBase/include" `
+          --install-location installed `
+          --devkit-location=../maya-devkit/devkitBase/devkit `
+          workspace
+      - name: Zip all the files
+        run: |
+          7z a usd-maya-2019-windows.zip ..\usd-maya\installed\*
+      - name: Upload USD Maya 2019 build
+        uses: actions/upload-artifact@v1
+        with:
+          name: usd-maya-2019
+          path: usd-maya-2019-windows.zip
