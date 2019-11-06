@@ -1,0 +1,11 @@
+--- a/cmake/pxrTargets-release.cmake
++++ b/cmake/pxrTargets-release.cmake
+@@ -433,7 +433,7 @@ set_target_properties(usdDancingCubesExample PROPERTIES
+   )
+ 
+ list(APPEND _IMPORT_CHECK_TARGETS usdDancingCubesExample )
+-list(APPEND _IMPORT_CHECK_FILES_FOR_usdDancingCubesExample "${_IMPORT_PREFIX}/share/usd/examples/plugin/usdDancingCubesExample.lib" "${_IMPORT_PREFIX}/share/usd/examples/plugin/usdDancingCubesExample.dll" )
++# list(APPEND _IMPORT_CHECK_FILES_FOR_usdDancingCubesExample "${_IMPORT_PREFIX}/share/usd/examples/plugin/usdDancingCubesExample.lib" "${_IMPORT_PREFIX}/share/usd/examples/plugin/usdDancingCubesExample.dll" )
+ 
+ # Import target "usdRecursivePayloadsExample" for configuration "Release"
+ set_property(TARGET usdRecursivePayloadsExample APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
