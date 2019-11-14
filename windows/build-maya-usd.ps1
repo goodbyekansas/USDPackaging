@@ -22,4 +22,9 @@ if ($?) {
     #exit 1
 }
 
-python $srcdir/build.py $builddir `--devkit-location $devkitlocation/devkitBase `--pxrusd-location $usdcorelocation `--install-location $installdir `--generator "Visual Studio 16 2019" `--build-relwithdebug
+python $srcdir/build.py $builddir `
+--devkit-location $devkitlocation/devkitBase `
+--pxrusd-location $usdcorelocation `
+--install-location $installdir `
+--generator "Visual Studio 16 2019" `
+--build-relwithdebug

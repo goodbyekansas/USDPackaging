@@ -7,11 +7,13 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Get version for USD GBK fork
+        run: echo "::set-env name=USD_REF::$((Get-Content .\versions.json | ConvertFrom-Json).core)"
       - name: Checkout USD GBK fork
         uses: actions/checkout@v1
         with:
           repository: goodbyekansas/USD
-          ref: gbk
+          ref: ${{ env.USD_REF }}
           path: usd-core
       - name: Set up Python 2.7 Environment
         uses: actions/setup-python@v1
@@ -24,11 +26,10 @@ jobs:
       - name: Build USD Core
         run: |
           . ./windows/latest-vs.ps1
-          ./windows/build-usd-core.ps1 -pythondir $Env:pythonLocation -installdir ../result/usd-core -srcdir ../usd-core -builddir ../build/usd-core
-      - name: Zip all the files
-        run: |
-          7z a usd-core-windows.zip ..\result\usd-core\*
-      - name: Upload USD core build
+          ./windows/build-usd-core.ps1 -pythondir "$Env:pythonLocation" -installdir ../result/usd-core -srcdir ../usd-core -builddir ../build/usd-core
+      - name: Zip USD Core Installed Files
+        run: 7z a usd-core-windows.zip ..\result\usd-core\*
+      - name: Upload USD Core Installation
         uses: actions/upload-artifact@v1
         with:
           name: usd-core-windows
