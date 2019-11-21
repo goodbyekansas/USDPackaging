@@ -1,0 +1,11 @@
+--- a/cmake/pxrTargets-release.cmake
++++ b/cmake/pxrTargets-release.cmake
+@@ -373,7 +373,7 @@ set_target_properties(usdShaders PROPERTIES
+   )
+ 
+ list(APPEND _IMPORT_CHECK_TARGETS usdShaders )
+-list(APPEND _IMPORT_CHECK_FILES_FOR_usdShaders "${_IMPORT_PREFIX}/lib/usdShaders.lib" "${_IMPORT_PREFIX}/lib/libusdShaders.dll" )
++# list(APPEND _IMPORT_CHECK_FILES_FOR_usdShaders "${_IMPORT_PREFIX}/lib/usdShaders.lib" "${_IMPORT_PREFIX}/lib/libusdShaders.dll" )
+ 
+ # Import target "usdSkelImaging" for configuration "Release"
+ set_property(TARGET usdSkelImaging APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)

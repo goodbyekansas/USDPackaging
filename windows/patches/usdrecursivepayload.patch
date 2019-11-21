@@ -1,0 +1,11 @@
+--- a/cmake/pxrTargets-release.cmake
++++ b/cmake/pxrTargets-release.cmake
+@@ -443,7 +443,7 @@ set_target_properties(usdRecursivePayloadsExample PROPERTIES
+   )
+ 
+ list(APPEND _IMPORT_CHECK_TARGETS usdRecursivePayloadsExample )
+-list(APPEND _IMPORT_CHECK_FILES_FOR_usdRecursivePayloadsExample "${_IMPORT_PREFIX}/share/usd/examples/plugin/usdRecursivePayloadsExample.lib" "${_IMPORT_PREFIX}/share/usd/examples/plugin/usdRecursivePayloadsExample.dll" )
++# list(APPEND _IMPORT_CHECK_FILES_FOR_usdRecursivePayloadsExample "${_IMPORT_PREFIX}/share/usd/examples/plugin/usdRecursivePayloadsExample.lib" "${_IMPORT_PREFIX}/share/usd/examples/plugin/usdRecursivePayloadsExample.dll" )
+ 
+ # Import target "usdSchemaExamples" for configuration "Release"
+ set_property(TARGET usdSchemaExamples APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)

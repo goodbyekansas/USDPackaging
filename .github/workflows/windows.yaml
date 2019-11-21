@@ -1,0 +1,74 @@
+name: Windows Packaging
+on: push
+
+jobs:
+  build-core:
+    name: Build USD Core
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Get version for USD GBK fork
+        run: echo "::set-env name=USD_REF::$((Get-Content .\versions.json | ConvertFrom-Json).core)"
+      - name: Checkout USD GBK fork
+        uses: actions/checkout@v1
+        with:
+          repository: goodbyekansas/USD
+          ref: ${{ env.USD_REF }}
+          path: usd-core
+      - name: Set up Python 2.7 Environment
+        uses: actions/setup-python@v1
+        with:
+          python-version: '2.7.x'
+          architecture: 'x64'
+      - name: Install Python prereqs
+        run: |
+          pip install PySide PyOpenGL Jinja2
+      - name: Build USD Core
+        run: |
+          . ./windows/latest-vs.ps1
+          ./windows/build-usd-core.ps1 -pythondir "$Env:pythonLocation" -installdir ../result/usd-core -srcdir ../usd-core -builddir ../build/usd-core
+      - name: Zip USD Core Installed Files
+        run: 7z a usd-core-windows.zip ..\result\usd-core\*
+      - name: Upload USD Core Installation
+        uses: actions/upload-artifact@v1
+        with:
+          name: usd-core-windows
+          path: usd-core-windows.zip
+
+  build-usd-maya-2019:
+    name: Build USD Maya 2019
+    runs-on: windows-latest
+    needs: build-core
+    steps:
+      - uses: actions/checkout@v1
+      - name: Checkout Maya USD GBK fork
+        uses: actions/checkout@v1
+        with:
+          repository: goodbyekansas/maya-usd
+          ref: gbk-master
+          path: usd-maya
+      - name: Set up Python 2.7 Environment
+        uses: actions/setup-python@v1
+        with:
+          python-version: '2.7.x'
+          architecture: 'x64'
+      - name: Download USD core build
+        uses: actions/download-artifact@v1
+        with:
+          name: usd-core-windows
+          path: ../result/usd-core
+      - name: Download Maya 2019 DevKit
+        run: |
+          Invoke-WebRequest https://autodesk-adn-transfer.s3-us-west-2.amazonaws.com/ADN+Extranet/M%26E/Maya/devkit+2019/Autodesk_Maya_2019_2_Update_DEVKIT_Windows.zip -OutFile devkit_maya2019.zip
+          Expand-Archive -Path devkit_maya2019.zip -DestinationPath ..\maya-devkit -Force
+      - name: Install Python prereqs
+        run: pip install PySide PyOpenGL Jinja2
+      - name: Compile USD Maya 2019
+        run: ./windows/build-maya-usd.ps1 -srcdir ../usd-maya -builddir ../build/usd-maya -pythondir $Env:pythonLocation -usdcorelocation ../result/usd-core -patchdir ./windows/patches -devkitlocation ../maya-devkit -installdir ../result/usd-maya
+      - name: Zip all the files
+        run: 7z a usd-maya-2019-windows.zip ..\result\usd-maya\*
+      - name: Upload USD Maya 2019 build
+        uses: actions/upload-artifact@v1
+        with:
+          name: usd-maya-2019
+          path: usd-maya-2019-windows.zip

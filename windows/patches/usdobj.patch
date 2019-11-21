@@ -1,0 +1,11 @@
+--- a/cmake/pxrTargets-release.cmake
++++ b/cmake/pxrTargets-release.cmake
+@@ -423,7 +423,7 @@ set_target_properties(usdObj PROPERTIES
+   )
+ 
+ list(APPEND _IMPORT_CHECK_TARGETS usdObj )
+-list(APPEND _IMPORT_CHECK_FILES_FOR_usdObj "${_IMPORT_PREFIX}/share/usd/examples/plugin/usdObj.lib" "${_IMPORT_PREFIX}/share/usd/examples/plugin/usdObj.dll" )
++# list(APPEND _IMPORT_CHECK_FILES_FOR_usdObj "${_IMPORT_PREFIX}/share/usd/examples/plugin/usdObj.lib" "${_IMPORT_PREFIX}/share/usd/examples/plugin/usdObj.dll" )
+ 
+ # Import target "usdDancingCubesExample" for configuration "Release"
+ set_property(TARGET usdDancingCubesExample APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
